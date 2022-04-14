@@ -2,23 +2,24 @@ import React from 'react';
 import google from '../../../images/social-logo/google.png';
 import facebook from '../../../images/social-logo/facebook.png';
 import github from '../../../images/social-logo/github.png';
-import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
 import { useNavigate } from 'react-router-dom';
 
 const SocialLogin = () => {
     const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+    const [signInWithGithub, user1, loading1, error1] = useSignInWithGithub(auth);
     const navigate = useNavigate();
 
-    let errorelement ;
+    let errorElement ;
 
-    if (error) {
-         errorelement= <div>
-            <p className='text-danger'>Error: {error.message}</p>
+    if (error || error1) {
+         errorElement= <div>
+            <p className='text-danger'>Error: {error?.message} {error1?.message}</p>
           </div>
       }
 
-      if(user){
+      if(user || user1){
         navigate("/home");
       }
 
@@ -29,7 +30,7 @@ const SocialLogin = () => {
             <p className='mt-2 px-2'>or</p>
             <div style={{height: '1px'}} className='bg-primary w-50'></div>
         </div>
-        {errorelement}
+        {errorElement}
         <div>
             <button onClick={()=> signInWithGoogle()}
             className='btn btn-primary w-50 d-block mx-auto my-2'>
@@ -40,7 +41,8 @@ const SocialLogin = () => {
                 <img style={{width: '24px'}} src={facebook} alt="" />
                <span className='px-2'> Facebook Sign In</span>
             </button>
-            <button className='btn btn-primary w-50 d-block mx-auto'>
+            <button onClick = {() => signInWithGithub()}
+            className='btn btn-primary w-50 d-block mx-auto'>
                 <img style={{width: '24px'}} src={github} alt="" />
                <span className='px-2'> Github Sign In</span>
             </button>

@@ -10,6 +10,13 @@ const Login = () => {
   const passwordRef = useRef("");
   const navigate = useNavigate();
 
+  let errorElement;
+  if (error ) {
+    errorElement= <div>
+       <p className='text-danger'>Error: {error?.message} </p>
+     </div>
+ }
+
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
 
@@ -60,6 +67,7 @@ const Login = () => {
         </Button>
       </Form>
 
+{errorElement}
       <p>
         New to Genius Car?{" "}
         <Link
